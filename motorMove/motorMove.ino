@@ -4,12 +4,13 @@ Servo servo1;
 
 void setup() {
   pinMode(9, OUTPUT);
-  //Serial.begin(9600);
+  Serial.begin(9600);
   
-  //servo1.attach(10);
+  servo1.attach(10);
   
   pinMode(2, INPUT);
   pinMode(3, INPUT);
+  servo1.write(180);
 }
 
 void loop() {
@@ -24,10 +25,11 @@ void loop() {
   servo1.write(0);
   delay(2000);*/
   
-  if (digitalRead(2) == HIGH) {
-    digitalWrite(9, 255);
+  
+  if (digitalRead(2) == LOW) {
+    servo1.write(125);  
   }
-  else {
-    digitalWrite(9, 0);
-  }
+  if (digitalRead(3) == LOW) {
+    servo1.write(180);
+  } 
 }
