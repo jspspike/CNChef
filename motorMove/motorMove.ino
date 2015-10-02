@@ -2,6 +2,13 @@
 
 Servo servo1;
 
+void dropMili(int mil) {
+  mil /= 1.16;
+  servo1.write(125);
+  delay(1000);
+  servo1.write(180);
+}
+
 void setup() {
   pinMode(9, OUTPUT);
   Serial.begin(9600);
@@ -25,7 +32,7 @@ void loop() {
   servo1.write(0);
   delay(2000);*/
   
-  
+  dropMili(5);
   if (digitalRead(2) == LOW) {
     servo1.write(125);  
   }
