@@ -1,18 +1,15 @@
 #include <Servo.h>
-
+#include <Wire.h>
 
 int MOTOR1_DIR1 = 2;
 int MOTOR1_DIR2 = 3;
 int MOTOR1_SPEED = 9;
 
-int BUTTON_1 = 5;
-int BUTTON_2 = 6;
-int BUTTON_3 = 7;
-
 int SERVO_1 = 0;
 int SERVO_2 = 1;
 int SERVO_3 = 4;
 
+int x;
 
 bool active = false;
 
@@ -20,9 +17,7 @@ void setup() {
   
   Serial.begin(9600);
   
-  pinMode(BUTTON_1, INPUT);
-  pinMode(BUTTON_2, INPUT);
-  pinMode(BUTTON_3, INPUT);
+
 
   pinMode(SERVO_1, OUTPUT);
   pinMode(SERVO_2, OUTPUT);
@@ -33,21 +28,29 @@ void setup() {
   pinMode(MOTOR1_SPEED, OUTPUT);
 
   
-  
-  moveLeft(255);
-  delay(3000);
-  stopMotors();
+  Wire.begin(9);
+
+  Wire.onReceive(receiveEvent);
+  //
+}
+
+void receiveEvent(int bytes) {
+  x = Wire.read();
 }
 
 void moveLeftTime(int time, int speed) {
   moveLeft(speed);
   delay(time);
+  moveRight(100);
+  delay(50);
   stopMotors();
 }
 
 void moveRightTime(int time, int speed) {
   moveRight(speed);
   delay(time);
+  moveLeft(100);
+  delay(50);
   stopMotors();
 }
 
@@ -69,6 +72,18 @@ void stopMotors() {
     digitalWrite(MOTOR1_DIR2, HIGH);
 }
 
-void loop() {
 
+
+void loop() {
+  if(x == 4) {
+    moveRightTime(4900, 255);
+    delay(1500);
+    moveLeftTime(1750, 255);
+    x = 0;
+  }
+
+  if(x == 1) {
+    moveLeftTime(250, 255);
+    x = 0; 
+  }
 }
